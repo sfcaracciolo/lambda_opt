@@ -1,0 +1,10 @@
+Scripts/
+Include/
+__pycache__
+etc/
+data/
+Lib/
+share/
+pyvenv.cfg
+*.eps
+*.pdf

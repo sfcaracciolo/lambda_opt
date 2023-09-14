@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lambda_opt"
+version = "0.0.1"
+authors = [
+    {name = "Santiago F. Caracciolo", email = "santiago.caracciolo@gmail.com"},
+]
+description = "A project with hyperparameter selection criteria such as L-curve, U-curve & CRESO"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "scipy"
+]
