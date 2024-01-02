@@ -5,8 +5,6 @@ from matplotlib import pyplot as plt
 from geometric_plotter import Plotter
 import numpy as np 
 
-Plotter.set_export()
-
 rng = np.random.default_rng(seed=3)
 
 m, n = 50, 50
@@ -28,21 +26,21 @@ regs = [
 
 linestyle = cycle(['-k', '--k'])
 
+k = 0
 for criteria in (LCurve, UCurve, CRESO):
-    fig, ax = plt.subplots()
+    p = Plotter(_2d=True, ncols=1, nrows=1, figsize=(5,5))
     pltset = next(settings)
-    ax.set_title(pltset['title'])
-    ax.set_ylabel(pltset['ylabel'])
-    ax.set_xlabel(pltset['xlabel'])
+    p.axs.set_title(pltset['title'])
+    p.axs.set_ylabel(pltset['ylabel'])
+    p.axs.set_xlabel(pltset['xlabel'])
     for reg in regs:
-        reg.set_lambdas(l_min, l_max, 100)
-        reg.solve(y)
-        R = reg.compute_residuals()
-        P = reg.compute_penalizations()
-        ctr = criteria(P, R, reg.lambdas)
+        lambdas = reg.lambdaspace(l_min, l_max, 100)
+        X = reg.solve(y, lambdas)
+        R = reg.residual(X, y)
+        P = reg.penalization(X)
+        ctr = criteria(P, R, lambdas**2)
         opt = ctr.get_optimum()
-        ax.plot(ctr.x, ctr.y, next(linestyle))
-        ax.plot(ctr.x[opt], ctr.y[opt], '.k', markersize=10)
-        # print(reg.lims)
-    Plotter.save(folder='figs/', name=f"curve_{pltset['name']}")
+        p.axs.plot(ctr.x, ctr.y, next(linestyle))
+        p.axs.plot(ctr.x[opt], ctr.y[opt], '.k', markersize=10)
+    p.save(folder='figs/', name=f"curve_{pltset['name']}")
 Plotter.show()
